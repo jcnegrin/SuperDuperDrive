@@ -36,6 +36,9 @@ public class HomeController {
 
     @GetMapping()
     public String getHomePage(Authentication authentication,
+                              @ModelAttribute("newFile") FileForm newFile,
+                              @ModelAttribute("newNote") NoteForm newNote,
+                              @ModelAttribute("newCredential") CredentialForm newCredential,
                               Model model) {
 
         String userName = authentication.getName();
