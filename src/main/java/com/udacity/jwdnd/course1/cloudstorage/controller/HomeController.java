@@ -5,13 +5,11 @@ import com.udacity.jwdnd.course1.cloudstorage.model.FileForm;
 import com.udacity.jwdnd.course1.cloudstorage.model.NoteForm;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.*;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -87,4 +85,36 @@ public class HomeController {
 
         return "result";
     }
+
+    @GetMapping(value = "/get-file/{fileName}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ResponseBody
+    public byte[] getFile(@PathVariable String fileName) {
+        return fileService.getFile(fileName).getFileData();
+    }
+
+    @GetMapping(value = "/delete-file/{fileName}")
+    public String deleteUserFile(Authentication authentication,
+                                 @PathVariable String fileName,
+                                 Model model) {
+        fileService.deleteFile(fileName);
+        String userName = authentication.getName();
+        User user = userService.getUser(userName);
+        Integer userId = user.getUserId();
+        model.addAttribute("files", fileService.getFilesByUser(userId));
+        model.addAttribute("result", "success");
+        return "result";
+    }
+
+     /*@DeleteMapping(value = "/delete-file/{fileName}")
+    public String deleteUserFile(Authentication authentication,
+                                 @PathVariable String fileName,
+                                 Model model) {
+        fileService.deleteFile(fileName);
+        String userName = authentication.getName();
+        User user = userService.getUser(userName);
+        Integer userId = user.getUserId();
+        model.addAttribute("files", fileService.getFilesByUser(userId));
+        model.addAttribute("result", "success");
+        return "result";
+    }*/
 }
