@@ -24,7 +24,7 @@ public class CredentialService {
         credentialMapper.insert(credential);
     }
 
-    public ArrayList<Credential> getCredentialListings(Integer userId) {
+    public ArrayList<Credential> getAllCredentialsByUser(Integer userId) {
         return credentialMapper.getAllCredentialsByClient(userId);
     }
 
