@@ -102,50 +102,6 @@ public class HomeController {
         return "result";
     }
 
-    @PostMapping("/add-note")
-    public String newNote(Authentication authentication,
-                          @ModelAttribute("newFile") FileForm newFile,
-                          @ModelAttribute("newNote") NoteForm newNote,
-                          @ModelAttribute("newCredential") CredentialForm newCredential,
-                          Model model) {
-
-        String userName = authentication.getName();
-        String newTitle = newNote.getTitle();
-        String newDescription = newNote.getDescription();
-
-        if (!newTitle.isEmpty()) {
-            noteService.addNote(newTitle, newDescription, userName);
-        }
-
-        User user = userService.getUser(userName);
-        model.addAttribute("notes", noteService.getAllNotes(user));
-        model.addAttribute("result", "success");
-
-        return "result";
-    }
-
-    @GetMapping(value = "/get-note/{noteId}")
-    public Note getNote(@PathVariable Integer noteId) {
-        return noteService.getNote(noteId);
-    }
-
-    @GetMapping(value = "/delete-note/{noteId}")
-    public String deleteNote(Authentication authentication,
-                             @PathVariable Integer noteId,
-                             @ModelAttribute("newNote") NoteForm newNote,
-                             @ModelAttribute("newFile") FileForm newFile,
-                             @ModelAttribute("newCredential") CredentialForm newCredential,
-                             Model model) {
-
-        noteService.deleteNote(noteId);
-        String userName = authentication.getName();
-        User user = userService.getUser(userName);
-        model.addAttribute("notes", noteService.getAllNotes(user));
-        model.addAttribute("result", "success");
-
-        return "result";
-    }
-
      /*@DeleteMapping(value = "/delete-file/{fileName}")
     public String deleteUserFile(Authentication authentication,
                                  @PathVariable String fileName,
