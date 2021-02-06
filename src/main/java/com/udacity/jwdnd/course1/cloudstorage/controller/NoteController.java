@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @Controller
 @RequestMapping("/note")
 public class NoteController {
@@ -40,10 +42,13 @@ public class NoteController {
         return "result";
     }
 
+
     @GetMapping("/{noteId}")
     public Note getNote(@PathVariable Integer noteId) {
         return noteService.getNote(noteId);
     }
+
+
 
     @GetMapping("/delete-note/{noteId}")
     public String deleteOneNote(Authentication authentication,
