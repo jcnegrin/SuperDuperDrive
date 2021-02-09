@@ -98,7 +98,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <form action="#" th:action="@{'/note/'}" th:object="${newNote}" method="POST" >
-                                            <input type="hidden" name="noteId" th:field="*{noteId}" id="note-id">
+                                            <input type="hidden" name="noteId" id="note-id">
                                             <div class="form-group">
                                                 <label for="note-title" class="col-form-label">Title</label>
                                                 <input type="text" name= "noteTitle" class="form-control" th:field="*{title}" id="note-title" maxlength="20" required>

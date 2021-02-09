@@ -52,8 +52,6 @@ public class HomeController {
     public String newFile(
             Authentication authentication,
             @ModelAttribute("newFile") FileForm newFile,
-            @ModelAttribute("newNote") NoteForm newNote,
-            @ModelAttribute("newCredential") CredentialForm newCredential,
             Model model) throws IOException {
 
         String userName = authentication.getName();
