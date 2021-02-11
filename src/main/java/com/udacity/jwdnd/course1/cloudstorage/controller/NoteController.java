@@ -29,11 +29,17 @@ public class NoteController {
                           @ModelAttribute("newNote") NoteForm noteForm,
                           Model model) {
 
+        String id = noteForm.getId();
         String title = noteForm.getTitle();
         String description = noteForm.getDescription();
         String userName = authentication.getName();
 
-        noteService.addNote(title, description, userName);
+        if (id.isEmpty()) {
+            noteService.addNote(title, description, userName);
+        } else {
+            Note existingNote = this.getNote(Integer.parseInt(id));
+            noteService.updateNote(existingNote.getNoteId(), title, description);
+        }
 
         User user = userService.getUser(userName);
         model.addAttribute("notes", noteService.getAllNotes(user));

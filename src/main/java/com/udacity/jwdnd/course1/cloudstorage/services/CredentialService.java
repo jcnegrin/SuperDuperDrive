@@ -28,12 +28,12 @@ public class CredentialService {
         return credentialMapper.getAllCredentialsByClient(userId);
     }
 
-    public Credential getCredential(Integer noteId) {
-        return credentialMapper.getCredential(noteId);
+    public Credential getCredential(Integer credentialId) {
+        return credentialMapper.getCredential(credentialId);
     }
 
-    public void deleteCredential(Integer noteId) {
-        credentialMapper.deleteCredential(noteId);
+    public void deleteCredential(Integer credentialId) {
+        credentialMapper.deleteCredential(credentialId);
     }
 
     public void updateCredential(Integer credentialId, String newUserName, String url, String key, String password) {
