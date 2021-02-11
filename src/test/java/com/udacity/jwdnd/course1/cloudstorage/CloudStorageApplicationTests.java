@@ -102,20 +102,20 @@ class CloudStorageApplicationTests {
 	@Order(5)
 	public void createNoteTest() {
 
-		WebDriverWait wait = new WebDriverWait (driver, 10);
-		registerNewUser();
+		WebDriverWait wait = new WebDriverWait (driver, 30);
 
-		/*driver.get("http://localhost:" + this.port + "/login");
+		driver.get("http://localhost:" + this.port + "/login");
 		WebElement inputUser = driver.findElement(By.id("inputUsername"));
 		WebElement inputPassword = driver.findElement(By.id("inputPassword"));
 		inputUser.sendKeys(userName);
 		inputPassword.sendKeys(password);
 		WebElement loginButton = driver.findElement(By.id("loginBtn"));
-		loginButton.click();*/
+		loginButton.click();
 
 		// Going to Notes Tab
 		wait.withTimeout(Duration.ofSeconds(30));
 
+		driver.get("http://localhost:" + this.port + "/home");
 		WebElement notesTab = driver.findElement(By.id("nav-notes-tab"));
 		wait.until(ExpectedConditions.elementToBeClickable(notesTab)).click();
 
@@ -159,55 +159,19 @@ class CloudStorageApplicationTests {
 
 		WebDriverWait wait = new WebDriverWait(driver, 30);
 
-		// Signup an User
-
-		driver.get("http://localhost:" + this.port + "/signup");
-		WebElement inputFirstName = driver.findElement(By.id("inputFirstName"));
-		inputFirstName.sendKeys(firstName);
-		WebElement inputLastName = driver.findElement(By.id("inputLastName"));
-		inputLastName.sendKeys(lastName);
-		WebElement inputUsername = driver.findElement(By.id("inputUsername"));
-		inputUsername.sendKeys(userName);
-		WebElement inputPassword = driver.findElement(By.id("inputPassword"));
-		inputPassword.sendKeys(password);
-		WebElement signUpButton = driver.findElement(By.id("signupBtn"));
-		signUpButton.click();
-
-		// Signin an User
-
 		driver.get("http://localhost:" + this.port + "/login");
-		inputUsername = driver.findElement(By.id("inputUsername"));
-		inputUsername.sendKeys(userName);
-		inputPassword = driver.findElement(By.id("inputPassword"));
+		WebElement inputUser = driver.findElement(By.id("inputUsername"));
+		WebElement inputPassword = driver.findElement(By.id("inputPassword"));
+		inputUser.sendKeys(userName);
 		inputPassword.sendKeys(password);
 		WebElement loginButton = driver.findElement(By.id("loginBtn"));
 		loginButton.click();
-		Assertions.assertEquals("Home", driver.getTitle());
-
-		// Insert a new note
-
-		wait.withTimeout(Duration.ofSeconds(30));
-
-		WebElement notesTab = driver.findElement(By.id("nav-notes-tab"));
-		wait.until(ExpectedConditions.elementToBeClickable(notesTab)).click();
-
-		WebElement addNoteBtn = driver.findElement(By.id("addNoteBtn"));
-		wait.until(ExpectedConditions.elementToBeClickable(addNoteBtn)).click();
-
-		wait.until(ExpectedConditions.elementToBeClickable(By.id("note-title"))).sendKeys(noteTitle);
-		WebElement noteDescriptionInput = driver.findElement(By.id("note-description"));
-		noteDescriptionInput.sendKeys(noteDescription);
-
-		WebElement noteSubmitBtn = driver.findElement(By.id("noteSubmitBtn"));
-		noteSubmitBtn.click();
-
-		Assertions.assertEquals("Result", driver.getTitle());
 
 		// Updating a note
 
 		driver.get("http://localhost:" + this.port + "/home");
-		notesTab = driver.findElement(By.id("nav-notes-tab"));
-		notesTab.click();
+		WebElement notesTab = driver.findElement(By.id("nav-notes-tab"));
+		wait.until(ExpectedConditions.elementToBeClickable(notesTab)).click();
 
 		WebElement editNoteBtn = driver.findElement(By.id("editNoteBtn"));
 		wait.until(ExpectedConditions.elementToBeClickable(editNoteBtn)).click();
@@ -215,7 +179,7 @@ class CloudStorageApplicationTests {
 		wait.until(ExpectedConditions.elementToBeClickable(By.id("note-title"))).sendKeys(" " + "updated");
 		wait.until(ExpectedConditions.elementToBeClickable(By.id("note-description"))).sendKeys(" " + "updated");
 
-		noteSubmitBtn = driver.findElement(By.id("noteSubmitBtn"));
+		WebElement noteSubmitBtn = driver.findElement(By.id("noteSubmitBtn"));
 		noteSubmitBtn.click();
 
 		Assertions.assertEquals("Result", driver.getTitle());
@@ -224,7 +188,7 @@ class CloudStorageApplicationTests {
 
 		driver.get("http://localhost:" + this.port + "/home");
 		notesTab = driver.findElement(By.id("nav-notes-tab"));
-		notesTab.click();
+		wait.until(ExpectedConditions.elementToBeClickable(notesTab)).click();
 
 		WebElement notesTable = driver.findElement(By.id("userTable"));
 		List<WebElement> notesList = notesTable.findElements(By.tagName("th"));
@@ -239,6 +203,49 @@ class CloudStorageApplicationTests {
 		}
 
 		Assertions.assertTrue(updated);
+
+	}
+
+	@Test
+	@Order(7)
+	public void noteDeletionTest() {
+
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+
+		// Login
+		driver.get("http://localhost:" + this.port + "/login");
+		WebElement inputUser = driver.findElement(By.id("inputUsername"));
+		WebElement inputPassword = driver.findElement(By.id("inputPassword"));
+		inputUser.sendKeys(userName);
+		inputPassword.sendKeys(password);
+		WebElement loginButton = driver.findElement(By.id("loginBtn"));
+		loginButton.click();
+
+		// Deleting a note
+
+		driver.get("http://localhost:" + this.port + "/home");
+		WebElement notesTab = driver.findElement(By.id("nav-notes-tab"));
+		wait.until(ExpectedConditions.elementToBeClickable(notesTab)).click();
+
+		WebElement notesTable = driver.findElement(By.id("userTable"));
+		List<WebElement> notesList = notesTable.findElements(By.tagName("th"));
+		int notesCounter = notesList.size();
+
+		WebElement deleteNoteBtn = driver.findElement(By.id("deleteNoteBtn"));
+		wait.until(ExpectedConditions.elementToBeClickable(deleteNoteBtn)).click();
+
+		Assertions.assertEquals("Result", driver.getTitle());
+
+		// Checking if note was deleted
+
+		driver.get("http://localhost:" + this.port + "/home");
+		notesTab = driver.findElement(By.id("nav-notes-tab"));
+		notesTab.click();
+
+		notesTable = driver.findElement(By.id("userTable"));
+		notesList = notesTable.findElements(By.tagName("th"));
+
+		Assertions.assertTrue(notesCounter > notesList.size());
 
 	}
 
