@@ -18,6 +18,9 @@
                 <div class="alert alert-dark" th:if="${param.logout}">
                     You have been logged out
                 </div>
+                <div class="alert alert-dark" th:if="${success == true}">
+                    Your account was successfully created. Please Log In!
+                </div>
                 <div class="form-group">
                     <label for="inputUsername">Username</label>
                     <input type="input" class="form-control" name="username" id="inputUsername" placeholder="Enter Username" maxlength="20" required>
