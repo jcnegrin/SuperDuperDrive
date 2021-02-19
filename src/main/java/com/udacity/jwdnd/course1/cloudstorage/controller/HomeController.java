@@ -57,9 +57,17 @@ public class HomeController {
         String userName = authentication.getName();
         User user = userService.getUser(userName);
         Integer userId = user.getUserId();
+
         ArrayList<String> listOfFiles = fileService.getFilesByUser(userId);
         MultipartFile multipartFile = newFile.getFile();
         String fileName = multipartFile.getOriginalFilename();
+
+        if (multipartFile.getOriginalFilename().isEmpty()) {
+            model.addAttribute("result", "error");
+            model.addAttribute("message", "No file is selected");
+            return "result";
+        }
+
         boolean fileIsDuplicate = false;
 
         for (String file: listOfFiles) {
